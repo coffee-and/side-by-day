@@ -1,17 +1,11 @@
 name: Prepare npm lockfile
 
 on:
-  push:
-    branches: [chore/lock-dependencies]
   pull_request:
     branches: [main]
 
 permissions:
   contents: write
-
-concurrency:
-  group: prepare-npm-lockfile
-  cancel-in-progress: true
 
 jobs:
   prepare:
