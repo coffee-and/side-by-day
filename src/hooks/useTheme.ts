@@ -8,13 +8,14 @@ const themeColors: Record<ThemeName, string> = {
   dark: '#000000',
 };
 
-function normalizeTheme(value: string | null): ThemeName {
-  return value === 'dark' ? 'dark' : 'light';
+function isThemeName(value: string | null): value is ThemeName {
+  return value === 'light' || value === 'dark';
 }
 
 export function useTheme() {
   const [theme, setTheme] = useState<ThemeName>(() => {
-    return normalizeTheme(localStorage.getItem(STORAGE_KEY));
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    return isThemeName(savedTheme) ? savedTheme : DEFAULT_THEME;
   });
 
   useEffect(() => {
@@ -30,5 +31,5 @@ export function useTheme() {
     setTheme((current) => (current === 'light' ? 'dark' : 'light'));
   }
 
-  return { theme, setTheme, toggleTheme, defaultTheme: DEFAULT_THEME };
+  return { theme, toggleTheme };
 }
