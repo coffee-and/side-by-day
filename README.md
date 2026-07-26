@@ -1,24 +1,53 @@
 # Side by Day
 
-두 사람이 각자의 일정과 함께하는 날짜를 나란히 기록하는 모바일 우선 공유 캘린더입니다.
+친구와 커플이 함께 쓰는 모바일 우선 공유 캘린더입니다.
 
-## 현재 범위
+## 현재 구현
 
-- React + TypeScript + Vite 기본 구조
-- 모바일 우선 반응형 대시보드
-- 내추럴, 큐트, 심플, 다크 4개 테마
-- 공용 디자인 토큰과 UI 컴포넌트
-- `나 / 상대 / 함께` 일정 구분
-- 날짜 카운트업·카운트다운 카드
-- Mock Data 기반 화면
-- GitHub Actions를 통한 GitHub Pages 자동 배포
+- 실제 현재 날짜를 기준으로 한 월간 캘린더
+- 이전 달·다음 달 이동 및 오늘로 이동
+- 월 제목 클릭 → 12개월 전체 보기
+- 연도 클릭 → 현재 연도 앞뒤를 포함한 10개 연도 보기
+- 날짜 선택 및 선택한 날짜 상세 정보
+- 대한민국 공휴일·대체공휴일·선거일 표시
+- 주요 국가기념일·생활기념일 표시
+- 한국 음력 날짜와 간지 표시
+- 나·상대·함께 일정 구분
+- 날짜 카운트업·카운트다운
+- 내추럴·심플·큐트·다크 테마
+- 모바일 하단 내비게이션과 PWA 기본 메타데이터
 
-현재는 UI 뼈대와 로컬 상태 구조에 집중하며 데이터베이스 및 외부 캘린더 연동은 포함하지 않습니다.
+## 달력 데이터 범위
+
+- 공식 공휴일 데이터: 현재 설치된 데이터 패키지 기준 `2018–2027년`
+- 주요 기념일: 앱 내부의 교체 가능한 목록으로 관리
+- 음력 변환: 패키지가 지원하는 한국 음력 범위 안에서 제공
+
+공식 공휴일 데이터가 없는 연도를 선택하면 빈 날짜로 단정하지 않고 지원 범위를 화면에 안내합니다. 앞으로 공공데이터 API나 갱신된 연도별 데이터로 공급자만 교체할 수 있도록 서비스 계층을 분리했습니다.
+
+## 구조
+
+```text
+src/
+├─ features/calendar/
+│  ├─ components/       # 월간·전체 월·연도·날짜 상세 UI
+│  ├─ hooks/            # 화면 전환과 날짜 선택 상태
+│  ├─ lib/              # 순수 날짜 계산 유틸리티
+│  ├─ services/         # 음력·대한민국 공휴일 공급자
+│  ├─ CalendarWorkspace.tsx
+│  └─ types.ts
+├─ components/          # 앱 공용 UI와 날짜 카운터
+├─ data/                # 현재는 로컬 예시 데이터
+├─ hooks/               # 공용 테마 상태
+└─ styles/              # 토큰·테마·공용 컴포넌트 스타일
+```
+
+외부 캘린더나 네이티브 캘린더 연동 시 `CalendarEventSource`와 캘린더 서비스 계층을 확장하도록 구성했습니다.
 
 ## 실행
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -26,22 +55,10 @@ npm run dev
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## 디자인 시스템
+`main` 브랜치에 반영되면 GitHub Actions가 GitHub Pages로 자동 배포합니다.
 
-컴포넌트에서는 색상과 간격을 직접 하드코딩하지 않고 `src/styles`의 공용 토큰을 사용합니다.
+## 라이선스 고지
 
-- `tokens.css`: 간격, 반경, 공통 일정 색상
-- `themes.css`: 테마별 의미 기반 색상과 표면 값
-- `base.css`: 전역 레이아웃과 타이포그래피
-- `components.css`: 공용 UI와 캘린더 컴포넌트 스타일
-
-테마는 루트 요소의 `data-theme` 속성으로 적용되며 사용자의 선택은 `localStorage`에 저장됩니다.
-
-## GitHub Pages
-
-`main` 브랜치에 변경이 푸시되면 `.github/workflows/deploy-pages.yml`이 빌드 결과물을 GitHub Pages에 배포합니다.
-
-저장소 설정의 **Settings → Pages → Build and deployment → Source**가 **GitHub Actions**로 선택되어 있어야 합니다.
+외부 패키지와 데이터 라이선스는 [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md)를 확인하세요.
