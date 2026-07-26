@@ -8,6 +8,7 @@ import {
 } from '../services/koreanCalendarService';
 import { getKoreanLunarDate } from '../services/lunarCalendarService';
 import type { KoreanCalendarEvent } from '../types';
+import { getEventAppearanceStyle } from './EventLabel';
 
 const ownerLabel = {
   mine: '나',
@@ -39,7 +40,7 @@ export function DateDetails({
   const emptyKoreanCalendarMessage = isCalendarDataLoading
     ? '공휴일 정보를 확인하고 있어요'
     : hasCalendarDataError
-      ? '공휴일 데이터를 불러오지 못했어요'
+      ? '공휴일 정보를 불러오지 못했어요. 주요 기념일만 표시합니다.'
       : isOfficialHolidayYearSupported
         ? '등록된 공휴일·기념일이 없어요'
         : `공식 공휴일 데이터는 ${OFFICIAL_HOLIDAY_DATA_RANGE.start}–${OFFICIAL_HOLIDAY_DATA_RANGE.end}년을 지원해요`;
@@ -97,7 +98,11 @@ export function DateDetails({
         {dayEvents.length ? (
           <div className="event-list">
             {dayEvents.map((event) => (
-              <article className="event-card" key={event.id}>
+              <article
+                className="event-card"
+                key={event.id}
+                style={getEventAppearanceStyle(event.appearance)}
+              >
                 <span className={`event-card__accent event-card__accent--${event.owner}`} aria-hidden="true" />
                 <div className="event-card__body">
                   <div className="event-card__topline">
