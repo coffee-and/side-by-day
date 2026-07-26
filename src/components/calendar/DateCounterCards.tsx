@@ -17,7 +17,7 @@ function getDays(counter: DateCounter) {
 
 function getCounterLabel(counter: DateCounter, days: number) {
   if (counter.mode === 'countup') {
-    return `+${days}`;
+    return `${days}일`;
   }
   if (days === 0) {
     return 'D-Day';
@@ -27,21 +27,16 @@ function getCounterLabel(counter: DateCounter, days: number) {
 
 export function DateCounterCards({ counters }: DateCounterCardsProps) {
   return (
-    <section aria-labelledby="counter-heading">
-      <div className="section-heading">
-        <div>
-          <p className="eyebrow">둘의 날짜</p>
-          <h2 id="counter-heading">기억하고 싶은 날</h2>
-        </div>
-      </div>
-      <div className="counter-list">
-        {counters.map((counter, index) => {
+    <section className="counter-strip" aria-labelledby="counter-heading">
+      <h2 className="visually-hidden" id="counter-heading">기억하고 싶은 날짜</h2>
+      <div className="counter-strip__list">
+        {counters.map((counter) => {
           const days = getDays(counter);
           return (
-            <article className={`counter-card counter-card--${index % 2 === 0 ? 'primary' : 'secondary'}`} key={counter.id}>
+            <article className="counter-item" key={counter.id}>
               <span>{counter.title}</span>
               <strong>{getCounterLabel(counter, days)}</strong>
-              <time dateTime={counter.targetDate}>{counter.targetDate}</time>
+              <time className="counter-item__date" dateTime={counter.targetDate}>{counter.targetDate}</time>
             </article>
           );
         })}
