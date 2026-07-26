@@ -1,6 +1,17 @@
 import { useMemo, useState } from 'react';
-import { addMonths, addYears, getYearWindow, startOfMonth } from '../lib/dateUtils';
+import {
+  addMonths,
+  addYears,
+  createLocalDate,
+  getYearWindow,
+  startOfMonth,
+} from '../lib/dateUtils';
 import type { CalendarViewMode } from '../types';
+
+function createClampedDate(year: number, month: number, preferredDay: number) {
+  const lastDay = new Date(year, month + 1, 0).getDate();
+  return createLocalDate(year, month, Math.min(preferredDay, lastDay));
+}
 
 export function useCalendarController(initialDate = new Date()) {
   const today = useMemo(() => new Date(), []);
@@ -45,12 +56,24 @@ export function useCalendarController(initialDate = new Date()) {
   }
 
   function selectMonth(monthIndex: number) {
-    setVisibleMonth(new Date(visibleMonth.getFullYear(), monthIndex, 1, 12));
+    const nextSelectedDate = createClampedDate(
+      visibleMonth.getFullYear(),
+      monthIndex,
+      selectedDate.getDate(),
+    );
+    setSelectedDate(nextSelectedDate);
+    setVisibleMonth(startOfMonth(nextSelectedDate));
     setViewMode('month');
   }
 
   function selectYear(year: number) {
-    setVisibleMonth((current) => new Date(year, current.getMonth(), 1, 12));
+    const nextSelectedDate = createClampedDate(
+      year,
+      visibleMonth.getMonth(),
+      selectedDate.getDate(),
+    );
+    setSelectedDate(nextSelectedDate);
+    setVisibleMonth(startOfMonth(nextSelectedDate));
     setYearWindowCenter(year);
     setViewMode('months');
   }
