@@ -311,8 +311,22 @@
   overflow: hidden;
 }
 
-.event-label,
-.calendar-day__overflow {
+.event-label--mine,
+.event-card--mine {
+  --event-owner-color: var(--event-mine);
+}
+
+.event-label--partner,
+.event-card--partner {
+  --event-owner-color: var(--event-partner);
+}
+
+.event-label--together,
+.event-card--together {
+  --event-owner-color: var(--event-together);
+}
+
+.event-label {
   display: flex;
   width: 100%;
   min-width: 0;
@@ -320,35 +334,34 @@
   flex: 0 0 var(--calendar-event-line-height);
   align-items: center;
   gap: 3px;
-  padding: 0 3px;
+  padding: 0 2px;
   overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: var(--event-label-background);
-  color: var(--text-primary);
+  border: 0;
+  background: transparent;
+  color: var(--event-text-color, var(--text-primary));
   font-size: 0.52rem;
-  font-weight: 600;
+  font-weight: var(--event-font-weight, 800);
   line-height: 1;
   white-space: nowrap;
 }
 
+.event-label.event-appearance--underline {
+  border-bottom: 2px solid var(--event-accent-color, var(--event-owner-color));
+  border-radius: 0;
+}
+
+.event-label.event-appearance--fill {
+  border-radius: var(--event-radius, 4px);
+  background: var(--event-accent-color, var(--event-owner-color));
+  color: var(--event-text-color, #171717);
+}
+
 .event-label__owner {
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   flex: 0 0 auto;
   border-radius: 50%;
-}
-
-.event-label--mine .event-label__owner {
-  background: var(--event-mine);
-}
-
-.event-label--partner .event-label__owner {
-  background: var(--event-partner);
-}
-
-.event-label--together .event-label__owner {
-  background: var(--event-together);
+  background: var(--event-owner-color);
 }
 
 .event-label__title {
@@ -358,13 +371,22 @@
 }
 
 .calendar-day__overflow {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: var(--calendar-event-line-height);
+  flex: 0 0 var(--calendar-event-line-height);
+  align-items: center;
   justify-content: center;
   padding: 0;
-  border-color: transparent;
+  overflow: hidden;
+  border: 0;
   background: transparent;
   color: var(--text-secondary);
   font-size: 0.72rem;
+  line-height: 1;
   letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .month-overview {
@@ -598,25 +620,22 @@
 
 .event-card {
   position: relative;
-  display: grid;
-  grid-template-columns: 3px minmax(0, 1fr);
+  min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-control);
-  background: var(--surface-raised);
-  color: var(--text-primary);
+  border: 0;
+  background: transparent;
+  color: var(--event-text-color, var(--text-primary));
 }
 
-.event-card__accent--mine {
-  background: var(--event-mine);
+.event-card.event-appearance--underline {
+  border-bottom: 3px solid var(--event-accent-color, var(--event-owner-color));
+  border-radius: 0;
 }
 
-.event-card__accent--partner {
-  background: var(--event-partner);
-}
-
-.event-card__accent--together {
-  background: var(--event-together);
+.event-card.event-appearance--fill {
+  border-radius: var(--event-radius, var(--radius-control));
+  background: var(--event-accent-color, var(--event-owner-color));
+  color: var(--event-text-color, #171717);
 }
 
 .event-card__body {
@@ -648,29 +667,30 @@
   display: inline-flex;
   min-height: 19px;
   align-items: center;
-  gap: 3px;
-  padding: 0 5px;
-  border-radius: var(--radius-pill);
-  color: #ffffff;
+  gap: 4px;
+  padding: 0;
+  color: inherit;
   font-size: 0.62rem;
   font-weight: 700;
-  opacity: 1;
 }
 
-.owner-badge--mine {
+.owner-badge__dot {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.owner-badge--mine .owner-badge__dot {
   background: var(--event-mine);
 }
 
-.owner-badge--partner {
+.owner-badge--partner .owner-badge__dot {
   background: var(--event-partner);
 }
 
-.owner-badge--together {
+.owner-badge--together .owner-badge__dot {
   background: var(--event-together);
-}
-
-[data-theme='dark'] .owner-badge--together {
-  color: #000000;
 }
 
 .empty-agenda {
