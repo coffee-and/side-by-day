@@ -1,13 +1,13 @@
-import { CalendarDays, Moon, Sun } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 import { DateCounterCards } from './components/calendar/DateCounterCards';
 import { BottomNavigation } from './components/ui/BottomNavigation';
+import { ThemeToggle } from './components/ui/ThemeToggle';
 import { sampleCounters, sampleDayDecorations, sampleEvents } from './data/sampleData';
 import { CalendarWorkspace } from './features/calendar/CalendarWorkspace';
 import { useTheme } from './hooks/useTheme';
 
 export function App() {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
 
   return (
     <div className="app-shell">
@@ -22,17 +22,7 @@ export function App() {
           </div>
         </div>
 
-        <button
-          aria-label={isDark ? '라이트 테마로 변경' : '다크 테마로 변경'}
-          aria-pressed={isDark}
-          className="theme-toggle"
-          id="app-theme-toggle"
-          onClick={toggleTheme}
-          type="button"
-        >
-          {isDark ? <Sun aria-hidden="true" size={17} /> : <Moon aria-hidden="true" size={17} />}
-          <span>{isDark ? '라이트' : '다크'}</span>
-        </button>
+        <ThemeToggle onToggle={toggleTheme} theme={theme} />
       </header>
 
       <main className="app-main">
