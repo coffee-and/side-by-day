@@ -28,11 +28,20 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Verify production build
-        run: npm run build
+        id: build
+        continue-on-error: true
+        run: npm run build > build.log 2>&1
 
-      - name: Upload verified lockfile
+      - name: Upload lockfile and build log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: verified-package-lock
-          path: package-lock.json
+          name: npm-lockfile-diagnostics
+          path: |
+            package-lock.json
+            build.log
           if-no-files-found: error
+
+      - name: Fail when build verification failed
+        if: steps.build.outcome == 'failure'
+        run: exit 1
