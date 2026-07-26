@@ -7,21 +7,23 @@
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
-  --space-10: 40px;
-  --page-padding: 16px;
-  --content-max: 1120px;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --page-padding: 14px;
+  --content-max: 1180px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
   --radius-pill: 999px;
   --transition-fast: 160ms ease;
-  --event-mine: #48b6e8;
-  --event-partner: #ff6b8a;
-  --event-together: #ffb547;
+  --control-height: 38px;
+  --event-mine: #4f78a8;
+  --event-partner: #a05b68;
+  --event-together: #8a774f;
+  --holiday-color: #b84141;
+  --saturday-color: #426b9d;
 }
 
 @media (min-width: 768px) {
   :root {
-    --page-padding: 28px;
+    --page-padding: 24px;
   }
 }
