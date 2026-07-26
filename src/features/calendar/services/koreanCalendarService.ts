@@ -1,13 +1,5 @@
-import Holidays from 'date-holidays';
-import type { KoreanCalendarEvent, KoreanCalendarEventType } from '../types';
-
-interface HolidayRecord {
-  date: string;
-  name: string;
-  type?: string;
-  substitute?: boolean;
-  note?: string;
-}
+import { getHolidayPreset } from '@hyunbinseo/holidays-kr';
+import type { KoreanCalendarEvent } from '../types';
 
 interface FixedCommemoration {
   month: number;
@@ -15,10 +7,9 @@ interface FixedCommemoration {
   name: string;
 }
 
-const holidayProvider = new Holidays('KR');
-holidayProvider.setLanguages('ko');
+type HolidayPreset = Record<string, readonly string[]>;
 
-const cache = new Map<number, KoreanCalendarEvent[]>();
+const officialCache = new Map<number, KoreanCalendarEvent[]>();
 
 const fixedCommemorations: FixedCommemoration[] = [
   { month: 3, day: 3, name: '납세자의 날' },
@@ -69,45 +60,57 @@ function toDateKey(year: number, month: number, day: number) {
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
-function normalizeType(type?: string): KoreanCalendarEventType {
-  if (type === 'public' || type === 'bank') {
-    return 'public';
-  }
-  return 'observance';
+function getCommemorations(year: number): KoreanCalendarEvent[] {
+  return fixedCommemorations.map((item) => ({
+    id: `commemoration-${year}-${item.month}-${item.day}`,
+    date: toDateKey(year, item.month, item.day),
+    name: item.name,
+    type: 'commemoration',
+  }));
 }
 
-export function getKoreanCalendarEvents(year: number) {
-  const cached = cache.get(year);
+async function getOfficialHolidays(year: number): Promise<KoreanCalendarEvent[]> {
+  const cached = officialCache.get(year);
   if (cached) {
     return cached;
   }
 
-  const officialEvents = (holidayProvider.getHolidays(year) as HolidayRecord[]).map((holiday, index) => ({
-    id: `holiday-${year}-${index}-${holiday.name}`,
-    date: holiday.date.slice(0, 10),
-    name: holiday.name,
-    type: normalizeType(holiday.type),
-    substitute: holiday.substitute,
-    note: holiday.note,
-  })) satisfies KoreanCalendarEvent[];
-
-  const commemorations = fixedCommemorations.map((item) => ({
-    id: `commemoration-${year}-${item.month}-${item.day}`,
-    date: toDateKey(year, item.month, item.day),
-    name: item.name,
-    type: 'commemoration' as const,
-  }));
-
-  const merged = new Map<string, KoreanCalendarEvent>();
-  [...officialEvents, ...commemorations].forEach((event) => {
-    merged.set(`${event.date}-${event.name}`, event);
-  });
-
-  const result = [...merged.values()].sort((left, right) => left.date.localeCompare(right.date));
-  cache.set(year, result);
-  return result;
+  try {
+    const preset = await getHolidayPreset(String(year)) as HolidayPreset;
+    const events = Object.entries(preset).flatMap(([date, names]) => names.map((name, index) => ({
+      id: `holiday-${date}-${index}`,
+      date,
+      name,
+      type: 'public' as const,
+      substitute: name.includes('대체공휴일'),
+    })));
+    officialCache.set(year, events);
+    return events;
+  } catch (error) {
+    if (error instanceof RangeError) {
+      officialCache.set(year, []);
+      return [];
+    }
+    throw error;
+  }
 }
 
-export function getKoreanCalendarEventsForYears(years: number[]) {
-  return years.flatMap((year) => getKoreanCalendarEvents(year));
+function mergeEvents(events: KoreanCalendarEvent[]) {
+  const merged = new Map<string, KoreanCalendarEvent>();
+  events.forEach((event) => {
+    merged.set(`${event.date}-${event.name}`, event);
+  });
+  return [...merged.values()].sort((left, right) => left.date.localeCompare(right.date));
+}
+
+export function getKoreanCommemorationsForYears(years: number[]) {
+  return years.flatMap(getCommemorations);
+}
+
+export async function getKoreanCalendarEventsForYears(years: number[]) {
+  const officialEvents = await Promise.all(years.map(getOfficialHolidays));
+  return mergeEvents([
+    ...officialEvents.flat(),
+    ...getKoreanCommemorationsForYears(years),
+  ]);
 }
