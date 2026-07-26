@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { CalendarEvent } from '../../types';
 import { CalendarToolbar } from './components/CalendarToolbar';
 import { DateDetails } from './components/DateDetails';
@@ -7,7 +7,11 @@ import { MonthOverview } from './components/MonthOverview';
 import { YearOverview } from './components/YearOverview';
 import { useCalendarController } from './hooks/useCalendarController';
 import { buildMonthCells, getUniqueYears } from './lib/dateUtils';
-import { getKoreanCalendarEventsForYears } from './services/koreanCalendarService';
+import {
+  getKoreanCalendarEventsForYears,
+  getKoreanCommemorationsForYears,
+} from './services/koreanCalendarService';
+import type { KoreanCalendarEvent } from './types';
 
 interface CalendarWorkspaceProps {
   events: CalendarEvent[];
@@ -19,11 +23,35 @@ export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
     const monthDates = buildMonthCells(calendar.visibleMonth).map((cell) => cell.date);
     return getUniqueYears([...monthDates, calendar.selectedDate]);
   }, [calendar.visibleMonth, calendar.selectedDate]);
-
-  const koreanEvents = useMemo(
-    () => getKoreanCalendarEventsForYears(calendarYears),
-    [calendarYears],
+  const calendarYearKey = calendarYears.join(',');
+  const commemorations = useMemo(
+    () => getKoreanCommemorationsForYears(calendarYears),
+    [calendarYearKey],
   );
+  const [koreanEvents, setKoreanEvents] = useState<KoreanCalendarEvent[]>(commemorations);
+  const [isCalendarDataLoading, setIsCalendarDataLoading] = useState(true);
+
+  useEffect(() => {
+    let isActive = true;
+    setKoreanEvents(commemorations);
+    setIsCalendarDataLoading(true);
+
+    void getKoreanCalendarEventsForYears(calendarYears)
+      .then((loadedEvents) => {
+        if (isActive) {
+          setKoreanEvents(loadedEvents);
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsCalendarDataLoading(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [calendarYearKey, commemorations]);
 
   return (
     <section className="calendar-workspace" aria-label="대한민국 공유 캘린더">
@@ -70,6 +98,7 @@ export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
       <DateDetails
         date={calendar.selectedDate}
         events={events}
+        isCalendarDataLoading={isCalendarDataLoading}
         koreanEvents={koreanEvents}
       />
     </section>
