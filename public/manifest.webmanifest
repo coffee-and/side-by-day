@@ -1,0 +1,20 @@
+{
+  "name": "Side by Day",
+  "short_name": "Side by Day",
+  "description": "친구와 커플이 함께 쓰는 대한민국 공유 캘린더",
+  "lang": "ko-KR",
+  "start_url": "/side-by-day/",
+  "scope": "/side-by-day/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FBF9F6",
+  "theme_color": "#4F5B42",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
