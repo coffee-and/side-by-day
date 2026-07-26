@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: verify-interactive-calendar
+  group: verify-interactive-calendar-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
