@@ -9,6 +9,11 @@ interface FixedCommemoration {
 
 type HolidayPreset = Record<string, readonly string[]>;
 
+export const OFFICIAL_HOLIDAY_DATA_RANGE = {
+  start: 2018,
+  end: 2027,
+} as const;
+
 const officialCache = new Map<number, KoreanCalendarEvent[]>();
 
 const fixedCommemorations: FixedCommemoration[] = [
@@ -101,6 +106,10 @@ function mergeEvents(events: KoreanCalendarEvent[]) {
     merged.set(`${event.date}-${event.name}`, event);
   });
   return [...merged.values()].sort((left, right) => left.date.localeCompare(right.date));
+}
+
+export function hasOfficialHolidayData(year: number) {
+  return year >= OFFICIAL_HOLIDAY_DATA_RANGE.start && year <= OFFICIAL_HOLIDAY_DATA_RANGE.end;
 }
 
 export function getKoreanCommemorationsForYears(years: number[]) {
