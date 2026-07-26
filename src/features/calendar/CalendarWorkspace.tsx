@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { CalendarEvent } from '../../types';
+import type { CalendarDayDecoration, CalendarEvent } from '../../types';
 import { CalendarToolbar } from './components/CalendarToolbar';
 import { DateDetails } from './components/DateDetails';
 import { MonthCalendar } from './components/MonthCalendar';
@@ -15,9 +15,10 @@ import type { KoreanCalendarEvent } from './types';
 
 interface CalendarWorkspaceProps {
   events: CalendarEvent[];
+  dayDecorations: CalendarDayDecoration[];
 }
 
-export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
+export function CalendarWorkspace({ events, dayDecorations }: CalendarWorkspaceProps) {
   const calendar = useCalendarController();
   const calendarYears = useMemo(() => {
     const monthDates = buildMonthCells(calendar.visibleMonth).map((cell) => cell.date);
@@ -63,7 +64,7 @@ export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
 
   return (
     <section className="calendar-workspace" aria-label="대한민국 공유 캘린더">
-      <div className="calendar-card calendar-card--interactive">
+      <div className="calendar-panel">
         <CalendarToolbar
           onNext={calendar.goNext}
           onOpenMonths={calendar.openMonthOverview}
@@ -77,6 +78,7 @@ export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
 
         {calendar.viewMode === 'month' ? (
           <MonthCalendar
+            dayDecorations={dayDecorations}
             events={events}
             koreanEvents={koreanEvents}
             onSelectDate={calendar.selectDate}
