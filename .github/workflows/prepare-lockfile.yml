@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   prepare:
@@ -28,20 +28,14 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Verify production build
-        id: build
-        continue-on-error: true
-        run: npm run build > build.log 2>&1
+        run: npm run build
 
-      - name: Upload lockfile and build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm-lockfile-diagnostics
-          path: |
-            package-lock.json
-            build.log
-          if-no-files-found: error
-
-      - name: Fail when build verification failed
-        if: steps.build.outcome == 'failure'
-        run: exit 1
+      - name: Commit verified lockfile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          lockfile_content="$(base64 -w 0 package-lock.json)"
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/package-lock.json" \
+            -f message='검증된 npm 잠금 파일 추가' \
+            -f content="$lockfile_content" \
+            -f branch='chore/lock-dependencies'
