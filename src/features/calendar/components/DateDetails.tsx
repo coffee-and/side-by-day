@@ -15,9 +15,15 @@ interface DateDetailsProps {
   date: Date;
   events: CalendarEvent[];
   koreanEvents: KoreanCalendarEvent[];
+  isCalendarDataLoading: boolean;
 }
 
-export function DateDetails({ date, events, koreanEvents }: DateDetailsProps) {
+export function DateDetails({
+  date,
+  events,
+  koreanEvents,
+  isCalendarDataLoading,
+}: DateDetailsProps) {
   const dateKey = toDateKey(date);
   const lunar = useMemo(() => getKoreanLunarDate(date), [dateKey]);
   const dayEvents = events.filter((event) => event.date === dateKey);
@@ -59,7 +65,9 @@ export function DateDetails({ date, events, koreanEvents }: DateDetailsProps) {
                   </li>
                 ))}
               </ul>
-            ) : <strong>등록된 공휴일·기념일이 없어요</strong>}
+            ) : (
+              <strong>{isCalendarDataLoading ? '공휴일 정보를 확인하고 있어요' : '등록된 공휴일·기념일이 없어요'}</strong>
+            )}
           </div>
         </div>
       </div>
