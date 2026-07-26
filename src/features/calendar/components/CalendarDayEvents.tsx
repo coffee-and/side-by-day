@@ -21,7 +21,12 @@ export function CalendarDayEvents({ events, decoration }: CalendarDayEventsProps
     }
 
     function measure() {
-      const availableHeight = element.clientHeight;
+      const currentElement = linesRef.current;
+      if (!currentElement) {
+        return;
+      }
+
+      const availableHeight = currentElement.clientHeight;
       const maxRows = Math.max(
         0,
         Math.floor((availableHeight + EVENT_ROW_GAP) / (EVENT_ROW_HEIGHT + EVENT_ROW_GAP)),
