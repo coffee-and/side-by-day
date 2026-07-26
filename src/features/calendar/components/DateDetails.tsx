@@ -8,7 +8,10 @@ import {
 } from '../services/koreanCalendarService';
 import { getKoreanLunarDate } from '../services/lunarCalendarService';
 import type { KoreanCalendarEvent } from '../types';
-import { getEventAppearanceStyle } from './EventLabel';
+import {
+  getEventAppearanceClassName,
+  getEventAppearanceStyle,
+} from './EventLabel';
 
 const ownerLabel = {
   mine: '나',
@@ -99,15 +102,15 @@ export function DateDetails({
           <div className="event-list">
             {dayEvents.map((event) => (
               <article
-                className="event-card"
+                className={`event-card event-card--${event.owner} ${getEventAppearanceClassName(event.appearance)}`}
                 key={event.id}
                 style={getEventAppearanceStyle(event.appearance)}
               >
-                <span className={`event-card__accent event-card__accent--${event.owner}`} aria-hidden="true" />
                 <div className="event-card__body">
                   <div className="event-card__topline">
                     <span className={`owner-badge owner-badge--${event.owner}`}>
-                      <Users aria-hidden="true" size={12} /> {ownerLabel[event.owner]}
+                      <i className="owner-badge__dot" aria-hidden="true" />
+                      {ownerLabel[event.owner]}
                     </span>
                     <time>{event.time ?? '종일'}</time>
                   </div>
