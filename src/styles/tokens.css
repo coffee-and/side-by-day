@@ -7,23 +7,24 @@
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
-  --page-padding: 14px;
-  --content-max: 1180px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --page-padding: 12px;
+  --content-max: 1080px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
   --radius-pill: 999px;
   --transition-fast: 160ms ease;
-  --control-height: 38px;
-  --event-mine: #4f78a8;
-  --event-partner: #a05b68;
-  --event-together: #8a774f;
-  --holiday-color: #b84141;
-  --saturday-color: #426b9d;
+  --control-height: 36px;
+  --calendar-event-line-height: 17px;
+  --event-mine: #4d78ad;
+  --event-partner: #b25f72;
+  --event-together: #6f6f73;
+  --holiday-color: #d34545;
+  --saturday-color: #4c6f9f;
 }
 
 @media (min-width: 768px) {
   :root {
-    --page-padding: 24px;
+    --page-padding: 22px;
   }
 }

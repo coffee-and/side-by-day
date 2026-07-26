@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Side by Day">
-  <rect width="512" height="512" rx="120" fill="#4F5B42"/>
-  <rect x="112" y="126" width="288" height="276" rx="58" fill="#FBF9F6"/>
-  <path d="M112 206h288" stroke="#4F5B42" stroke-width="28"/>
-  <path d="M184 94v76M328 94v76" stroke="#FBF9F6" stroke-width="30" stroke-linecap="round"/>
-  <circle cx="205" cy="294" r="34" fill="#8B7E74"/>
-  <circle cx="307" cy="294" r="34" fill="#A8B6A1"/>
+  <rect width="512" height="512" rx="120" fill="#000000"/>
+  <rect x="104" y="122" width="304" height="286" rx="60" fill="#FFFFFF"/>
+  <path d="M104 204h304" stroke="#000000" stroke-width="26"/>
+  <path d="M184 92v78M328 92v78" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="204" cy="294" r="30" fill="#000000"/>
+  <circle cx="308" cy="294" r="30" fill="#777777"/>
 </svg>
