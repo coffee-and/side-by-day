@@ -20,6 +20,7 @@ interface DateDetailsProps {
   events: CalendarEvent[];
   koreanEvents: KoreanCalendarEvent[];
   isCalendarDataLoading: boolean;
+  hasCalendarDataError: boolean;
 }
 
 export function DateDetails({
@@ -27,6 +28,7 @@ export function DateDetails({
   events,
   koreanEvents,
   isCalendarDataLoading,
+  hasCalendarDataError,
 }: DateDetailsProps) {
   const dateKey = toDateKey(date);
   const lunar = useMemo(() => getKoreanLunarDate(date), [dateKey]);
@@ -36,9 +38,11 @@ export function DateDetails({
 
   const emptyKoreanCalendarMessage = isCalendarDataLoading
     ? '공휴일 정보를 확인하고 있어요'
-    : isOfficialHolidayYearSupported
-      ? '등록된 공휴일·기념일이 없어요'
-      : `공식 공휴일 데이터는 ${OFFICIAL_HOLIDAY_DATA_RANGE.start}–${OFFICIAL_HOLIDAY_DATA_RANGE.end}년을 지원해요`;
+    : hasCalendarDataError
+      ? '공휴일 데이터를 불러오지 못했어요'
+      : isOfficialHolidayYearSupported
+        ? '등록된 공휴일·기념일이 없어요'
+        : `공식 공휴일 데이터는 ${OFFICIAL_HOLIDAY_DATA_RANGE.start}–${OFFICIAL_HOLIDAY_DATA_RANGE.end}년을 지원해요`;
 
   return (
     <aside className="date-details" aria-labelledby="date-details-heading">
