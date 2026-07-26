@@ -30,16 +30,24 @@ export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
   );
   const [koreanEvents, setKoreanEvents] = useState<KoreanCalendarEvent[]>(commemorations);
   const [isCalendarDataLoading, setIsCalendarDataLoading] = useState(true);
+  const [hasCalendarDataError, setHasCalendarDataError] = useState(false);
 
   useEffect(() => {
     let isActive = true;
     setKoreanEvents(commemorations);
     setIsCalendarDataLoading(true);
+    setHasCalendarDataError(false);
 
     void getKoreanCalendarEventsForYears(calendarYears)
       .then((loadedEvents) => {
         if (isActive) {
           setKoreanEvents(loadedEvents);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setKoreanEvents(commemorations);
+          setHasCalendarDataError(true);
         }
       })
       .finally(() => {
@@ -98,6 +106,7 @@ export function CalendarWorkspace({ events }: CalendarWorkspaceProps) {
       <DateDetails
         date={calendar.selectedDate}
         events={events}
+        hasCalendarDataError={hasCalendarDataError}
         isCalendarDataLoading={isCalendarDataLoading}
         koreanEvents={koreanEvents}
       />
