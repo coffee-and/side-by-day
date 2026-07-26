@@ -2,6 +2,10 @@ import { CalendarDays, Flag, MoonStar, Users } from 'lucide-react';
 import { useMemo } from 'react';
 import type { CalendarEvent } from '../../../types';
 import { formatLongDate, toDateKey } from '../lib/dateUtils';
+import {
+  hasOfficialHolidayData,
+  OFFICIAL_HOLIDAY_DATA_RANGE,
+} from '../services/koreanCalendarService';
 import { getKoreanLunarDate } from '../services/lunarCalendarService';
 import type { KoreanCalendarEvent } from '../types';
 
@@ -28,6 +32,13 @@ export function DateDetails({
   const lunar = useMemo(() => getKoreanLunarDate(date), [dateKey]);
   const dayEvents = events.filter((event) => event.date === dateKey);
   const dayKoreanEvents = koreanEvents.filter((event) => event.date === dateKey);
+  const isOfficialHolidayYearSupported = hasOfficialHolidayData(date.getFullYear());
+
+  const emptyKoreanCalendarMessage = isCalendarDataLoading
+    ? '공휴일 정보를 확인하고 있어요'
+    : isOfficialHolidayYearSupported
+      ? '등록된 공휴일·기념일이 없어요'
+      : `공식 공휴일 데이터는 ${OFFICIAL_HOLIDAY_DATA_RANGE.start}–${OFFICIAL_HOLIDAY_DATA_RANGE.end}년을 지원해요`;
 
   return (
     <aside className="date-details" aria-labelledby="date-details-heading">
@@ -65,9 +76,7 @@ export function DateDetails({
                   </li>
                 ))}
               </ul>
-            ) : (
-              <strong>{isCalendarDataLoading ? '공휴일 정보를 확인하고 있어요' : '등록된 공휴일·기념일이 없어요'}</strong>
-            )}
+            ) : <strong>{emptyKoreanCalendarMessage}</strong>}
           </div>
         </div>
       </div>
