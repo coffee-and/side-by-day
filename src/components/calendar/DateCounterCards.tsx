@@ -4,11 +4,25 @@ interface DateCounterCardsProps {
   counters: DateCounter[];
 }
 
+function startOfDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
 function getDays(counter: DateCounter) {
-  const today = new Date('2026-07-26T00:00:00');
+  const today = startOfDay(new Date());
   const target = new Date(`${counter.targetDate}T00:00:00`);
   const diff = Math.round((target.getTime() - today.getTime()) / 86400000);
   return counter.mode === 'countup' ? Math.abs(diff) + 1 : diff;
+}
+
+function getCounterLabel(counter: DateCounter, days: number) {
+  if (counter.mode === 'countup') {
+    return `+${days}`;
+  }
+  if (days === 0) {
+    return 'D-Day';
+  }
+  return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 }
 
 export function DateCounterCards({ counters }: DateCounterCardsProps) {
@@ -26,8 +40,8 @@ export function DateCounterCards({ counters }: DateCounterCardsProps) {
           return (
             <article className={`counter-card counter-card--${index % 2 === 0 ? 'primary' : 'secondary'}`} key={counter.id}>
               <span>{counter.title}</span>
-              <strong>{counter.mode === 'countup' ? `+${days}` : `D-${Math.max(days, 0)}`}</strong>
-              <time>{counter.targetDate}</time>
+              <strong>{getCounterLabel(counter, days)}</strong>
+              <time dateTime={counter.targetDate}>{counter.targetDate}</time>
             </article>
           );
         })}
