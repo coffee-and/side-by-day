@@ -7,9 +7,9 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
-  const isDark = theme === 'dark';
-  const nextThemeLabel = isDark ? '라이트' : '다크';
-  const Icon = isDark ? Sun : Moon;
+  const nextTheme: ThemeName = theme === 'dark' ? 'light' : 'dark';
+  const nextThemeLabel = nextTheme === 'light' ? '라이트' : '다크';
+  const Icon = nextTheme === 'light' ? Sun : Moon;
 
   return (
     <button
