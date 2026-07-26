@@ -32,10 +32,3 @@ jobs:
 
       - name: Production build
         run: npm run build
-
-      - name: Upload component styles
-        uses: actions/upload-artifact@v4
-        with:
-          name: event-style-source
-          path: src/styles/components.css
-          if-no-files-found: error
