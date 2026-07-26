@@ -2,15 +2,13 @@ export type ThemeName = 'light' | 'dark';
 
 export type EventOwner = 'mine' | 'partner' | 'together';
 export type CalendarEventSource = 'local' | 'google' | 'apple' | 'native';
-export type EventBorderStyle = 'none' | 'solid' | 'dashed' | 'dotted';
+export type EventAppearanceVariant = 'underline' | 'fill';
 
 export interface EventAppearance {
-  backgroundColor?: string;
+  variant: EventAppearanceVariant;
+  accentColor: string;
   textColor?: string;
-  borderColor?: string;
-  borderStyle?: EventBorderStyle;
   borderRadius?: number;
-  fontWeight?: 400 | 500 | 600 | 700 | 800;
 }
 
 export interface CalendarDayDecoration {
