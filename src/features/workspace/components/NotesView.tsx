@@ -1,94 +1,102 @@
-import { FileText, Pin, Plus } from 'lucide-react';
+import { Pin, PinOff, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import type { Memo } from '../../../types';
+import type { Memo, WorkspaceEditorTarget } from '../../../types';
 
 interface NotesViewProps {
   memos: Memo[];
-  onAddMemo: (title: string, content: string) => void;
+  onEdit: (target: WorkspaceEditorTarget) => void;
+  onTogglePin: (id: string) => void;
 }
 
-export function NotesView({ memos, onAddMemo }: NotesViewProps) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const orderedMemos = useMemo(
-    () => [...memos].sort((left, right) => {
-      if (left.pinned !== right.pinned) {
-        return left.pinned ? -1 : 1;
-      }
-      return right.updatedAt.localeCompare(left.updatedAt);
-    }),
-    [memos],
-  );
-
-  function submitMemo() {
-    onAddMemo(title, content);
-    setTitle('');
-    setContent('');
-  }
+export function NotesView({ memos, onEdit, onTogglePin }: NotesViewProps) {
+  const [query, setQuery] = useState('');
+  const filteredMemos = useMemo(() => {
+    const normalized = query.trim().toLocaleLowerCase();
+    const matching = normalized
+      ? memos.filter((memo) => `${memo.title} ${memo.content}`.toLocaleLowerCase().includes(normalized))
+      : memos;
+    return [...matching].sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+  }, [memos, query]);
+  const pinned = filteredMemos.filter((memo) => memo.pinned);
+  const recent = filteredMemos.filter((memo) => !memo.pinned);
 
   return (
-    <section className="workspace-view" aria-labelledby="notes-view-heading">
-      <header className="workspace-view__header">
-        <div>
-          <p className="eyebrow">메모</p>
-          <h2 id="notes-view-heading">기억해둘 것</h2>
-        </div>
-        <span className="space-chip">내 공간</span>
+    <section className="workspace-view notes-view" aria-labelledby="notes-view-heading">
+      <header className="screen-heading">
+        <h2 id="notes-view-heading">NOTES</h2>
       </header>
 
-      <section className="productivity-section" aria-labelledby="memo-add-heading">
-        <div className="productivity-section__heading">
-          <div>
-            <p className="eyebrow">빠른 작성</p>
-            <h3 id="memo-add-heading">새 메모</h3>
-          </div>
-        </div>
-        <div className="memo-editor">
-          <label>
-            <span>제목</span>
-            <input
-              onChange={(event) => setTitle(event.target.value)}
-              placeholder="메모 제목"
-              type="text"
-              value={title}
-            />
-          </label>
-          <label>
-            <span>내용</span>
-            <textarea
-              onChange={(event) => setContent(event.target.value)}
-              placeholder="기억해둘 내용을 적어두세요"
-              rows={4}
-              value={content}
-            />
-          </label>
-          <button className="compact-action" onClick={submitMemo} type="button">
-            <Plus aria-hidden="true" size={16} /> 저장
-          </button>
-        </div>
-      </section>
+      <label className="note-search">
+        <Search aria-hidden="true" size={17} />
+        <span className="visually-hidden">메모 검색</span>
+        <input
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="SEARCH NOTES"
+          type="search"
+          value={query}
+        />
+      </label>
 
-      <section className="productivity-section" aria-labelledby="memo-list-heading">
-        <div className="productivity-section__heading">
-          <h3 id="memo-list-heading">내 메모</h3>
-          <span className="count-badge">{orderedMemos.length}</span>
-        </div>
-        {orderedMemos.length ? (
-          <div className="memo-card-list">
-            {orderedMemos.map((memo) => (
-              <article className="memo-card" key={memo.id}>
-                <div className="memo-card__heading">
-                  <FileText aria-hidden="true" size={17} />
-                  <h3>{memo.title}</h3>
-                  {memo.pinned ? <Pin aria-label="고정된 메모" size={14} /> : null}
-                </div>
+      <NoteGroup
+        memos={pinned}
+        onEdit={onEdit}
+        onTogglePin={onTogglePin}
+        title="PINNED NOTES"
+      />
+      <NoteGroup
+        memos={recent}
+        onEdit={onEdit}
+        onTogglePin={onTogglePin}
+        title="RECENT NOTES"
+      />
+    </section>
+  );
+}
+
+function NoteGroup({
+  title,
+  memos,
+  onEdit,
+  onTogglePin,
+}: {
+  title: string;
+  memos: Memo[];
+  onEdit: (target: WorkspaceEditorTarget) => void;
+  onTogglePin: (id: string) => void;
+}) {
+  return (
+    <section className="productivity-section">
+      <div className="productivity-section__heading">
+        <h3>{title}</h3>
+        <span>{memos.length}</span>
+      </div>
+      {memos.length ? (
+        <div className="memo-card-list">
+          {memos.map((memo) => (
+            <article className="memo-card" key={memo.id}>
+              <button
+                className="memo-card__content"
+                onClick={() => onEdit({ kind: 'memo', id: memo.id })}
+                type="button"
+              >
+                <h3>{memo.title}</h3>
                 <p>{memo.content || '내용이 없는 메모'}</p>
-                {memo.linkedDate ? <time>연결 날짜 {memo.linkedDate}</time> : null}
-              </article>
-            ))}
-          </div>
-        ) : <p className="section-empty">저장된 메모가 아직 없어요.</p>}
-      </section>
+                {memo.linkedDate ? <time>{memo.linkedDate}</time> : null}
+              </button>
+              <button
+                aria-label={memo.pinned ? `${memo.title} 고정 해제` : `${memo.title} 고정`}
+                className="row-action"
+                onClick={() => onTogglePin(memo.id)}
+                type="button"
+              >
+                {memo.pinned
+                  ? <PinOff aria-hidden="true" size={15} />
+                  : <Pin aria-hidden="true" size={15} />}
+              </button>
+            </article>
+          ))}
+        </div>
+      ) : <p className="section-empty">메모가 없습니다.</p>}
     </section>
   );
 }

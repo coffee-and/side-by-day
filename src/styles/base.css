@@ -2,10 +2,10 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  border-radius: 0;
 }
 
 html {
-  scroll-behavior: smooth;
   background: var(--surface-page);
   color: var(--text-primary);
   font-family: var(--font-family-base);
@@ -23,6 +23,7 @@ button,
 input,
 select,
 textarea {
+  border-radius: 0;
   font: inherit;
 }
 
@@ -31,15 +32,23 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--text-primary);
-  outline-offset: 3px;
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
 }
 
 h1,
 h2,
 h3,
+h4,
 p,
 ul {
   margin: 0;
@@ -62,118 +71,9 @@ ul {
   border: 0;
 }
 
-.app-shell {
-  width: min(100%, var(--content-max));
-  margin: 0 auto;
-  padding: 0 var(--page-padding) 78px;
-}
-
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  min-height: 58px;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: max(8px, env(safe-area-inset-top)) 0 8px;
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--surface-page) 94%, transparent);
-  backdrop-filter: blur(14px);
-}
-
-.app-header__brand {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 9px;
-}
-
-.app-header h1 {
-  font-size: 1rem;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-}
-
-.app-header__description {
-  margin-top: 2px;
-  color: var(--text-secondary);
-  font-size: 0.72rem;
-}
-
-.brand-mark {
-  display: inline-grid;
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  border: 1px solid var(--border-color);
-  border-radius: 9px;
-  background: var(--surface-page);
-  color: var(--text-primary);
-}
-
-.theme-toggle {
-  display: inline-grid;
-  width: 34px;
-  height: 34px;
-  flex: 0 0 auto;
-  place-items: center;
-  padding: 0;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  background: var(--surface-page);
-  color: var(--text-secondary);
-}
-
-.theme-toggle:hover {
-  background: var(--surface-subtle);
-  color: var(--text-primary);
-}
-
 .eyebrow {
   color: var(--text-secondary);
   font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.app-main {
-  display: grid;
-  gap: var(--space-3);
-  padding-top: var(--space-2);
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  margin-bottom: var(--space-2);
-}
-
-.section-heading h2,
-.section-heading h3 {
-  margin-top: 2px;
-  font-size: 0.98rem;
-  letter-spacing: -0.02em;
-}
-
-#today-section,
-#calendar-section,
-#settings-section,
-#date-details-heading {
-  scroll-margin-top: 68px;
-}
-
-@media (min-width: 900px) {
-  .app-shell {
-    padding-bottom: var(--space-8);
-  }
-
-  .app-header {
-    position: static;
-  }
+  font-weight: 800;
+  letter-spacing: 0.1em;
 }

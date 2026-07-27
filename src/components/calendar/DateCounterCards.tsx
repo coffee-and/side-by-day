@@ -2,6 +2,7 @@ import type { DateCounter } from '../../types';
 
 interface DateCounterCardsProps {
   counters: DateCounter[];
+  onSelect?: (id: string) => void;
 }
 
 function startOfDay(date: Date) {
@@ -25,7 +26,7 @@ function getCounterLabel(counter: DateCounter, days: number) {
   return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 }
 
-export function DateCounterCards({ counters }: DateCounterCardsProps) {
+export function DateCounterCards({ counters, onSelect }: DateCounterCardsProps) {
   return (
     <section className="counter-strip" aria-labelledby="counter-heading">
       <h2 className="visually-hidden" id="counter-heading">기억하고 싶은 날짜</h2>
@@ -33,11 +34,17 @@ export function DateCounterCards({ counters }: DateCounterCardsProps) {
         {counters.map((counter) => {
           const days = getDays(counter);
           return (
-            <article className="counter-item" key={counter.id}>
+            <button
+              className="counter-item"
+              key={counter.id}
+              onClick={() => onSelect?.(counter.id)}
+              type="button"
+            >
+              {counter.icon ? <i aria-hidden="true" style={{ color: counter.color }}>{counter.icon}</i> : null}
               <span>{counter.title}</span>
               <strong>{getCounterLabel(counter, days)}</strong>
               <time className="counter-item__date" dateTime={counter.targetDate}>{counter.targetDate}</time>
-            </article>
+            </button>
           );
         })}
       </div>

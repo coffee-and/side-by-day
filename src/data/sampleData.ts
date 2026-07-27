@@ -6,8 +6,10 @@ import type {
   Space,
   TodoItem,
 } from '../types';
+import { EVENT_COLOR_TOKENS } from '../features/events/eventPalette';
 
 export const PERSONAL_SPACE_ID = 'personal-space';
+export const SHARED_SPACE_ID = 'shared-space-placeholder';
 
 export function toDateKey(date: Date) {
   const year = date.getFullYear();
@@ -29,9 +31,15 @@ const nowIso = new Date().toISOString();
 export const sampleSpaces: Space[] = [
   {
     id: PERSONAL_SPACE_ID,
-    name: '내 공간',
+    name: 'MY DIARY',
     kind: 'personal',
     memberIds: ['local-user'],
+  },
+  {
+    id: SHARED_SPACE_ID,
+    name: 'TOGETHER DIARY',
+    kind: 'shared',
+    memberIds: [],
   },
 ];
 
@@ -42,13 +50,10 @@ export const sampleEvents: CalendarEvent[] = [
     title: '저녁 약속',
     date: dateWithOffset(0),
     time: '19:30',
-    owner: 'mine',
-    source: 'local',
     appearance: {
       variant: 'fill',
-      accentColor: '#FF5C8A',
-      textColor: '#3A0718',
-      borderRadius: 5,
+      accentColor: EVENT_COLOR_TOKENS[2].accent,
+      textColor: EVENT_COLOR_TOKENS[2].text,
     },
   },
   {
@@ -57,11 +62,9 @@ export const sampleEvents: CalendarEvent[] = [
     title: '병원 예약',
     date: dateWithOffset(1),
     time: '14:00',
-    owner: 'mine',
-    source: 'local',
     appearance: {
       variant: 'underline',
-      accentColor: '#2F7CFF',
+      accentColor: EVENT_COLOR_TOKENS[10].accent,
     },
   },
   {
@@ -69,13 +72,10 @@ export const sampleEvents: CalendarEvent[] = [
     spaceId: PERSONAL_SPACE_ID,
     title: '친구 생일',
     date: dateWithOffset(4),
-    owner: 'mine',
-    source: 'local',
     appearance: {
       variant: 'fill',
-      accentColor: '#FFD84D',
-      textColor: '#382A00',
-      borderRadius: 4,
+      accentColor: EVENT_COLOR_TOKENS[0].accent,
+      textColor: EVENT_COLOR_TOKENS[0].text,
     },
   },
   {
@@ -84,12 +84,10 @@ export const sampleEvents: CalendarEvent[] = [
     title: '전시 보러 가기',
     date: exhibitionDate,
     time: '15:00',
-    owner: 'mine',
     note: '티켓 확인하기',
-    source: 'local',
     appearance: {
       variant: 'underline',
-      accentColor: '#18C96E',
+      accentColor: EVENT_COLOR_TOKENS[3].accent,
     },
   },
   {
@@ -98,13 +96,10 @@ export const sampleEvents: CalendarEvent[] = [
     title: '카페 들르기',
     date: exhibitionDate,
     time: '17:00',
-    owner: 'mine',
-    source: 'local',
     appearance: {
       variant: 'fill',
-      accentColor: '#FF8A3D',
-      textColor: '#3B1800',
-      borderRadius: 4,
+      accentColor: EVENT_COLOR_TOKENS[1].accent,
+      textColor: EVENT_COLOR_TOKENS[1].text,
     },
   },
 ];
@@ -116,6 +111,7 @@ export const sampleTodos: TodoItem[] = [
     title: '고양이 사료 주문하기',
     dueDate: dateWithOffset(0),
     createdAt: nowIso,
+    important: false,
   },
   {
     id: 'todo-2',
@@ -123,6 +119,7 @@ export const sampleTodos: TodoItem[] = [
     title: '택배 보내기',
     dueDate: dateWithOffset(0),
     createdAt: nowIso,
+    important: true,
   },
   {
     id: 'todo-3',
@@ -130,6 +127,7 @@ export const sampleTodos: TodoItem[] = [
     title: '주말 장보기 목록 정리',
     dueDate: dateWithOffset(3),
     createdAt: nowIso,
+    important: false,
   },
 ];
 
@@ -167,6 +165,9 @@ export const sampleCounters: DateCounter[] = [
     targetDate: dateWithOffset(-99),
     mode: 'countup',
     pinned: true,
+    yearlyRepeat: false,
+    icon: '◆',
+    color: EVENT_COLOR_TOKENS[6].accent,
   },
   {
     id: 'counter-2',
@@ -175,5 +176,8 @@ export const sampleCounters: DateCounter[] = [
     targetDate: dateWithOffset(14),
     mode: 'countdown',
     pinned: true,
+    yearlyRepeat: false,
+    icon: '✦',
+    color: EVENT_COLOR_TOKENS[2].accent,
   },
 ];
