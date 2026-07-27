@@ -73,7 +73,7 @@ export function MonthCalendar({
             `${cell.date.getMonth() + 1}월 ${cell.date.getDate()}일`,
             calendarLabel,
             decoration?.label,
-            dayEvents.length ? `공유 일정 ${dayEvents.length}개` : '',
+            dayEvents.length ? `일정 ${dayEvents.length}개` : '',
           ].filter(Boolean).join(', ');
 
           return (
