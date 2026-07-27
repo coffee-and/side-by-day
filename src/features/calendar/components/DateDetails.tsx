@@ -1,4 +1,4 @@
-import { CalendarDays, Flag, MoonStar, Users } from 'lucide-react';
+import { CalendarDays, Flag, MoonStar, UserRound } from 'lucide-react';
 import { useMemo } from 'react';
 import type { CalendarEvent } from '../../../types';
 import { formatLongDate, toDateKey } from '../lib/dateUtils';
@@ -12,12 +12,6 @@ import {
   getEventAppearanceClassName,
   getEventAppearanceStyle,
 } from './EventLabel';
-
-const ownerLabel = {
-  mine: '나',
-  partner: '상대',
-  together: '함께',
-} as const;
 
 interface DateDetailsProps {
   date: Date;
@@ -92,8 +86,8 @@ export function DateDetails({
       <section className="selected-agenda" aria-labelledby="selected-agenda-heading">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">공유 일정</p>
-            <h3 id="selected-agenda-heading">둘의 일정</h3>
+            <p className="eyebrow">일정</p>
+            <h3 id="selected-agenda-heading">내 일정</h3>
           </div>
           <span className="count-badge">{dayEvents.length}</span>
         </div>
@@ -108,9 +102,9 @@ export function DateDetails({
               >
                 <div className="event-card__body">
                   <div className="event-card__topline">
-                    <span className={`owner-badge owner-badge--${event.owner}`}>
+                    <span className="owner-badge owner-badge--mine">
                       <i className="owner-badge__dot" aria-hidden="true" />
-                      {ownerLabel[event.owner]}
+                      나
                     </span>
                     <time>{event.time ?? '종일'}</time>
                   </div>
@@ -122,8 +116,8 @@ export function DateDetails({
           </div>
         ) : (
           <div className="empty-agenda">
-            <Users aria-hidden="true" size={19} />
-            <p>이 날짜에는 아직 공유 일정이 없어요.</p>
+            <UserRound aria-hidden="true" size={19} />
+            <p>이 날짜에는 아직 일정이 없어요.</p>
           </div>
         )}
       </section>
