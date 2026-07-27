@@ -1,29 +1,27 @@
-import { CalendarDays, Heart, Home, Settings } from 'lucide-react';
-import { useState } from 'react';
+import { CalendarDays, CheckSquare2, Home, StickyNote } from 'lucide-react';
+import type { AppSection } from '../../types';
 
-const items = [
-  { label: '오늘', icon: Home, target: 'today-section' },
-  { label: '캘린더', icon: CalendarDays, target: 'calendar-section' },
-  { label: '날짜', icon: Heart, target: 'date-details-heading' },
-  { label: '설정', icon: Settings, target: 'settings-section' },
+const items: { label: string; icon: typeof Home; value: AppSection }[] = [
+  { label: '오늘', icon: Home, value: 'today' },
+  { label: '캘린더', icon: CalendarDays, value: 'calendar' },
+  { label: '할 일', icon: CheckSquare2, value: 'todos' },
+  { label: '메모', icon: StickyNote, value: 'notes' },
 ];
 
-export function BottomNavigation() {
-  const [activeTarget, setActiveTarget] = useState('calendar-section');
+interface BottomNavigationProps {
+  activeSection: AppSection;
+  onChange: (section: AppSection) => void;
+}
 
-  function navigate(target: string) {
-    document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setActiveTarget(target);
-  }
-
+export function BottomNavigation({ activeSection, onChange }: BottomNavigationProps) {
   return (
     <nav className="bottom-nav" aria-label="주요 메뉴">
-      {items.map(({ label, icon: Icon, target }) => (
+      {items.map(({ label, icon: Icon, value }) => (
         <button
-          aria-current={activeTarget === target ? 'page' : undefined}
-          className={activeTarget === target ? 'bottom-nav__item is-active' : 'bottom-nav__item'}
-          key={label}
-          onClick={() => navigate(target)}
+          aria-current={activeSection === value ? 'page' : undefined}
+          className={activeSection === value ? 'bottom-nav__item is-active' : 'bottom-nav__item'}
+          key={value}
+          onClick={() => onChange(value)}
           type="button"
         >
           <Icon aria-hidden="true" size={20} strokeWidth={2.1} />
