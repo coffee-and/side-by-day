@@ -9,10 +9,18 @@
   --space-8: 32px;
   --control-height: 40px;
   --calendar-event-line-height: 18px;
+  --mini-calendar-date-font-size: 8px;
+  --mini-calendar-date-line-height: 1.25;
   --sidebar-width: 210px;
   --detail-width: 370px;
   --holiday-color: #d13d4d;
   --saturday-color: #3f66b5;
   --transition-fast: 140ms ease;
   --selection-border-color: #151515;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --mini-calendar-date-font-size: 10px;
+  }
 }

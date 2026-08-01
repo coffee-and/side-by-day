@@ -12,7 +12,6 @@ import {
   getEventAppearanceClassName,
   getEventAppearanceStyle,
 } from '../../calendar/components/EventLabel';
-import { EventIcon } from '../../events/EventIcon';
 
 interface TodayViewProps {
   events: CalendarEvent[];
@@ -86,10 +85,7 @@ export function TodayView({
                 type="button"
               >
                 <time>{event.allDay ? 'ALL DAY' : event.time ?? 'ALL DAY'}</time>
-                <span className="today-event__title">
-                  {event.iconId ? <EventIcon iconId={event.iconId} size={16} /> : null}
-                  <strong>{event.title}</strong>
-                </span>
+                <strong>{event.title}</strong>
               </button>
             ))}
           </div>

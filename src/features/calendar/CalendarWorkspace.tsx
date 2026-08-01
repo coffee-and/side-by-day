@@ -1,4 +1,4 @@
-import type { CalendarDayDecoration, CalendarEvent } from '../../types';
+import type { CalendarEvent } from '../../types';
 import { CalendarToolbar } from './components/CalendarToolbar';
 import { MonthCalendar } from './components/MonthCalendar';
 import { MonthOverview } from './components/MonthOverview';
@@ -8,13 +8,11 @@ import type { CalendarState } from './hooks/useCalendar';
 interface CalendarWorkspaceProps {
   calendar: CalendarState;
   events: CalendarEvent[];
-  dayDecorations: CalendarDayDecoration[];
 }
 
 export function CalendarWorkspace({
   calendar,
   events,
-  dayDecorations,
 }: CalendarWorkspaceProps) {
   return (
     <section className="calendar-panel" aria-label="MY DIARY 달력">
@@ -31,7 +29,6 @@ export function CalendarWorkspace({
 
       {calendar.viewMode === 'month' ? (
         <MonthCalendar
-          dayDecorations={dayDecorations}
           events={events}
           koreanEvents={calendar.koreanEvents}
           onSelectDate={calendar.selectDate}

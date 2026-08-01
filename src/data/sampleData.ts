@@ -1,5 +1,4 @@
 import type {
-  CalendarDayDecoration,
   CalendarEvent,
   DateCounter,
   Memo,
@@ -50,7 +49,6 @@ export const sampleEvents: CalendarEvent[] = [
     title: '저녁 약속',
     date: dateWithOffset(0),
     time: '19:30',
-    iconId: 'meal',
     appearance: {
       variant: 'fill',
       accentColor: EVENT_COLOR_TOKENS[2].accent,
@@ -63,7 +61,6 @@ export const sampleEvents: CalendarEvent[] = [
     title: '병원 예약',
     date: dateWithOffset(1),
     time: '14:00',
-    iconId: 'hospital',
     appearance: {
       variant: 'underline',
       accentColor: EVENT_COLOR_TOKENS[10].accent,
@@ -74,7 +71,6 @@ export const sampleEvents: CalendarEvent[] = [
     spaceId: PERSONAL_SPACE_ID,
     title: '친구 생일',
     date: dateWithOffset(4),
-    iconId: 'birthday',
     appearance: {
       variant: 'fill',
       accentColor: EVENT_COLOR_TOKENS[0].accent,
@@ -87,7 +83,6 @@ export const sampleEvents: CalendarEvent[] = [
     title: '전시 보러 가기',
     date: exhibitionDate,
     time: '15:00',
-    iconId: 'exhibition',
     note: '티켓 확인하기',
     appearance: {
       variant: 'underline',
@@ -100,7 +95,6 @@ export const sampleEvents: CalendarEvent[] = [
     title: '카페 들르기',
     date: exhibitionDate,
     time: '17:00',
-    iconId: 'cafe',
     appearance: {
       variant: 'fill',
       accentColor: EVENT_COLOR_TOKENS[1].accent,
@@ -154,12 +148,6 @@ export const sampleMemos: Memo[] = [
     pinned: false,
     updatedAt: nowIso,
   },
-];
-
-export const sampleDayDecorations: CalendarDayDecoration[] = [
-  { date: dateWithOffset(0), icon: '🍽️', label: '저녁 약속' },
-  { date: dateWithOffset(4), icon: '🎂', label: '생일' },
-  { date: exhibitionDate, icon: '🖼️', label: '전시' },
 ];
 
 export const sampleCounters: DateCounter[] = [

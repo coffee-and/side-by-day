@@ -1,4 +1,3 @@
-import { sampleDayDecorations } from '../../data/sampleData';
 import type { AppSection, WorkspaceEditorTarget } from '../../types';
 import { CalendarWorkspace } from '../calendar/CalendarWorkspace';
 import { SelectedDatePanel } from '../calendar/components/SelectedDatePanel';
@@ -61,7 +60,6 @@ export function DiarySection({
     <section className="calendar-view">
       <CalendarWorkspace
         calendar={calendar}
-        dayDecorations={sampleDayDecorations}
         events={workspace.events}
       />
       {includeCalendarDetails ? (

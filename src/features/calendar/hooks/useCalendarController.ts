@@ -55,9 +55,9 @@ export function useCalendarController(initialDate = new Date()) {
     setViewMode('years');
   }
 
-  function selectMonth(monthIndex: number) {
+  function selectMonth(year: number, monthIndex: number) {
     const nextSelectedDate = createClampedDate(
-      visibleMonth.getFullYear(),
+      year,
       monthIndex,
       selectedDate.getDate(),
     );

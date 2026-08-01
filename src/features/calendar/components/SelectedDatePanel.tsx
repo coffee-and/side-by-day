@@ -1,4 +1,4 @@
-import { Flag, MoonStar, Pencil, Pin } from 'lucide-react';
+import { Pencil, Pin } from 'lucide-react';
 import { useMemo } from 'react';
 import { DateCounterCards } from '../../../components/calendar/DateCounterCards';
 import type {
@@ -19,7 +19,6 @@ import {
   getEventAppearanceClassName,
   getEventAppearanceStyle,
 } from './EventLabel';
-import { EventIcon } from '../../events/EventIcon';
 
 interface SelectedDatePanelProps {
   date: Date;
@@ -74,12 +73,10 @@ export function SelectedDatePanel({
 
       <div className="date-facts">
         <div className="date-fact">
-          <MoonStar aria-hidden="true" size={16} />
-          <span>음력 {lunar?.label ?? '지원 범위 밖'}</span>
+          <span>{lunar?.label ?? '음력 지원 범위 밖'}</span>
           {lunar?.gapja ? <small>{lunar.gapja}</small> : null}
         </div>
         <div className="date-fact">
-          <Flag aria-hidden="true" size={16} />
           <span>
             {dayKoreanEvents.length
               ? dayKoreanEvents.map((event) => event.name).join(' · ')
@@ -104,10 +101,7 @@ export function SelectedDatePanel({
                 type="button"
               >
                 <time>{event.allDay ? 'ALL DAY' : event.time ?? 'ALL DAY'}</time>
-                <span className="event-card__title">
-                  {event.iconId ? <EventIcon iconId={event.iconId} size={18} /> : null}
-                  <strong>{event.title}</strong>
-                </span>
+                <strong>{event.title}</strong>
                 {event.note ? <small>{event.note}</small> : null}
                 <Pencil aria-hidden="true" size={13} />
               </button>

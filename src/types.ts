@@ -30,12 +30,6 @@ export interface EventAlert {
   minutesBefore: number;
 }
 
-export interface CalendarDayDecoration {
-  date: string;
-  icon: string;
-  label?: string;
-}
-
 export interface CalendarEvent {
   id: string;
   spaceId: string;
@@ -45,7 +39,6 @@ export interface CalendarEvent {
   endTime?: string;
   allDay?: boolean;
   note?: string;
-  iconId?: string;
   appearance?: EventAppearance;
   repeat?: RepeatRule;
   alerts?: EventAlert[];

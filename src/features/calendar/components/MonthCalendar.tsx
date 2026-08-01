@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { CalendarDayDecoration, CalendarEvent } from '../../../types';
+import type { CalendarEvent } from '../../../types';
 import { buildMonthCells, isSameDay, weekdayLabels } from '../lib/dateUtils';
 import type { KoreanCalendarEvent } from '../types';
 import { CalendarDayEvents } from './CalendarDayEvents';
@@ -9,7 +9,6 @@ interface MonthCalendarProps {
   selectedDate: Date;
   today: Date;
   events: CalendarEvent[];
-  dayDecorations: CalendarDayDecoration[];
   koreanEvents: KoreanCalendarEvent[];
   onSelectDate: (date: Date) => void;
 }
@@ -21,26 +20,17 @@ function groupByDate<T extends { date: string }>(items: T[]) {
   }, {});
 }
 
-function indexDecorations(items: CalendarDayDecoration[]) {
-  return items.reduce<Record<string, CalendarDayDecoration>>((indexed, item) => {
-    indexed[item.date] = item;
-    return indexed;
-  }, {});
-}
-
 export function MonthCalendar({
   visibleMonth,
   selectedDate,
   today,
   events,
-  dayDecorations,
   koreanEvents,
   onSelectDate,
 }: MonthCalendarProps) {
   const cells = useMemo(() => buildMonthCells(visibleMonth), [visibleMonth]);
   const eventsByDate = useMemo(() => groupByDate(events), [events]);
   const koreanEventsByDate = useMemo(() => groupByDate(koreanEvents), [koreanEvents]);
-  const decorationsByDate = useMemo(() => indexDecorations(dayDecorations), [dayDecorations]);
 
   return (
     <div className="calendar-month-view">
@@ -52,7 +42,6 @@ export function MonthCalendar({
         {cells.map((cell) => {
           const dayEvents = eventsByDate[cell.key] ?? [];
           const dayKoreanEvents = koreanEventsByDate[cell.key] ?? [];
-          const decoration = decorationsByDate[cell.key];
           const publicHoliday = dayKoreanEvents.find((event) => event.type === 'public');
           const calendarLabel = publicHoliday?.name ?? dayKoreanEvents[0]?.name;
           const isSelected = isSameDay(cell.date, selectedDate);
@@ -72,7 +61,6 @@ export function MonthCalendar({
           const description = [
             `${cell.date.getMonth() + 1}월 ${cell.date.getDate()}일`,
             calendarLabel,
-            decoration?.label,
             dayEvents.length ? `일정 ${dayEvents.length}개` : '',
           ].filter(Boolean).join(', ');
 
@@ -88,7 +76,7 @@ export function MonthCalendar({
             >
               <span className="calendar-day__number">{cell.date.getDate()}</span>
               <span className="calendar-day__holiday" title={calendarLabel}>{calendarLabel ?? '\u00a0'}</span>
-              <CalendarDayEvents decoration={decoration} events={dayEvents} />
+              <CalendarDayEvents events={dayEvents} />
             </button>
           );
         })}

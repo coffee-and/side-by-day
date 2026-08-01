@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react';
 import type { CalendarEvent, EventAppearance } from '../../../types';
-import { EventIcon } from '../../events/EventIcon';
 import { getEventColorToken } from '../../events/eventPalette';
 
 const DEFAULT_VARIANT = 'underline';
@@ -41,9 +40,6 @@ export function EventLabel({ event }: EventLabelProps) {
       style={getEventAppearanceStyle(event.appearance)}
       title={event.title}
     >
-      {event.iconId ? (
-        <EventIcon className="event-label__icon" iconId={event.iconId} size={13} />
-      ) : null}
       <span className="event-label__title">{event.title}</span>
     </span>
   );
