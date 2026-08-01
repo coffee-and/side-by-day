@@ -19,6 +19,7 @@ import {
   getEventAppearanceClassName,
   getEventAppearanceStyle,
 } from './EventLabel';
+import { EventIcon } from '../../events/EventIcon';
 
 interface SelectedDatePanelProps {
   date: Date;
@@ -103,7 +104,10 @@ export function SelectedDatePanel({
                 type="button"
               >
                 <time>{event.allDay ? 'ALL DAY' : event.time ?? 'ALL DAY'}</time>
-                <strong>{event.title}</strong>
+                <span className="event-card__title">
+                  {event.iconId ? <EventIcon iconId={event.iconId} size={18} /> : null}
+                  <strong>{event.title}</strong>
+                </span>
                 {event.note ? <small>{event.note}</small> : null}
                 <Pencil aria-hidden="true" size={13} />
               </button>

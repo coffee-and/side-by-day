@@ -75,8 +75,55 @@
 .today-event strong {
   overflow: hidden;
   font-size: 0.78rem;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.today-event__title {
+  overflow: hidden;
+}
+
+@media (max-width: 559px) {
+  .workspace-dialog {
+    width: 100%;
+    max-height: 100dvh;
+    border: 0;
+  }
+
+  .workspace-editor {
+    max-height: 100dvh;
+  }
+
+  .event-icon-picker {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: min(78dvh, 680px);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -12px 40px rgb(0 0 0 / 20%);
+    transform: none;
+  }
+
+  .event-icon-picker__back {
+    visibility: visible;
+  }
+
+  .event-icon-picker__close {
+    visibility: hidden;
+  }
+
+  .event-icon-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .event-icon-option__favorite {
+    opacity: 0.62;
+  }
 }
 
 .compact-todo-list,
