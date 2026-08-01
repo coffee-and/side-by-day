@@ -45,6 +45,7 @@ export interface CalendarEvent {
   endTime?: string;
   allDay?: boolean;
   note?: string;
+  iconId?: string;
   appearance?: EventAppearance;
   repeat?: RepeatRule;
   alerts?: EventAlert[];

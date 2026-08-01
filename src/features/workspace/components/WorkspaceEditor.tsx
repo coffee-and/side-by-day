@@ -1,6 +1,9 @@
-import { Trash2, X } from 'lucide-react';
+import { Plus, Trash2, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { DEFAULT_EVENT_COLOR, EVENT_COLOR_TOKENS, getEventColorToken } from '../../events/eventPalette';
+import { EventIcon } from '../../events/EventIcon';
+import { EventIconPicker } from '../../events/EventIconPicker';
+import { EVENT_ICON_BY_ID } from '../../events/eventIcons';
 import type { Workspace } from '../hooks/useWorkspace';
 import type {
   DateCounter,
@@ -60,6 +63,8 @@ export function WorkspaceEditor({ target, workspace, onClose }: WorkspaceEditorP
   const [endTime, setEndTime] = useState(currentEvent?.endTime ?? '');
   const [allDay, setAllDay] = useState(currentEvent?.allDay ?? false);
   const [note, setNote] = useState(currentEvent?.note ?? '');
+  const [eventIconId, setEventIconId] = useState(currentEvent?.iconId);
+  const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
   const [appearance, setAppearance] = useState<EventAppearanceVariant>(
     currentEvent?.appearance?.variant ?? 'underline',
   );
@@ -111,6 +116,7 @@ export function WorkspaceEditor({ target, workspace, onClose }: WorkspaceEditorP
         endTime: allDay ? undefined : endTime || undefined,
         allDay,
         note: note.trim() || undefined,
+        iconId: eventIconId,
         appearance: {
           variant: appearance,
           accentColor: token.accent,
@@ -207,16 +213,53 @@ export function WorkspaceEditor({ target, workspace, onClose }: WorkspaceEditorP
           </select>
         </label>
 
-        <label>
-          <span>TITLE</span>
-          <input
-            autoFocus
-            onChange={(event) => setTitle(event.target.value)}
-            required
-            type="text"
-            value={title}
-          />
-        </label>
+        {target.kind === 'event' ? (
+          <div className="event-title-field">
+            <label>
+              <span>일정 제목</span>
+              <input
+                autoFocus
+                onChange={(event) => setTitle(event.target.value)}
+                placeholder="일정 제목"
+                required
+                type="text"
+                value={title}
+              />
+            </label>
+            <button
+              aria-label={eventIconId ? `현재 아이콘: ${EVENT_ICON_BY_ID.get(eventIconId)?.label ?? '선택됨'}. 변경` : '일정 아이콘 추가'}
+              className={`event-title-icon-button ${eventIconId ? 'has-icon' : ''}`}
+              onClick={() => setIsIconPickerOpen(true)}
+              style={{ '--event-icon-color': getEventColorToken(accentColor).text } as React.CSSProperties}
+              type="button"
+            >
+              {eventIconId ? (
+                <>
+                  <span className="event-title-icon-button__tile">
+                    <EventIcon iconId={eventIconId} size={20} />
+                  </span>
+                  <span>{EVENT_ICON_BY_ID.get(eventIconId)?.label}</span>
+                </>
+              ) : (
+                <>
+                  <Plus aria-hidden="true" size={16} />
+                  <span>아이콘 추가</span>
+                </>
+              )}
+            </button>
+          </div>
+        ) : (
+          <label>
+            <span>TITLE</span>
+            <input
+              autoFocus
+              onChange={(event) => setTitle(event.target.value)}
+              required
+              type="text"
+              value={title}
+            />
+          </label>
+        )}
 
         {target.kind === 'event' ? (
           <>
@@ -380,6 +423,16 @@ export function WorkspaceEditor({ target, workspace, onClose }: WorkspaceEditorP
             {isEditing ? 'SAVE CHANGES' : `ADD ${titles[target.kind]}`}
           </button>
         </footer>
+
+        {target.kind === 'event' && isIconPickerOpen ? (
+          <EventIconPicker
+            accentColor={getEventColorToken(accentColor).accent}
+            onClose={() => setIsIconPickerOpen(false)}
+            onSelect={setEventIconId}
+            selectedIconId={eventIconId}
+            title={title}
+          />
+        ) : null}
       </form>
     </dialog>
   );
