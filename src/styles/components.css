@@ -47,6 +47,16 @@
   background: var(--surface-secondary);
 }
 
+.theme-toggle__icon {
+  display: block;
+  width: 36px;
+  height: 18px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
 .diary-selector {
   position: relative;
   min-width: 0;

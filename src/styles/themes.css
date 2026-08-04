@@ -7,6 +7,7 @@
   --text-inverse: #ffffff;
   --divider: #e8e8ea;
   --focus-color: #535eeb;
+  --status-error: #c83246;
 }
 
 [data-theme='dark'] {
@@ -18,6 +19,7 @@
   --text-inverse: #000000;
   --divider: #29292d;
   --focus-color: #bdbdfd;
+  --status-error: #ff7380;
   --holiday-color: #ff7380;
   --saturday-color: #91b5ff;
 }

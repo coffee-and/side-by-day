@@ -1,4 +1,3 @@
-import { Moon, Sun } from 'lucide-react';
 import type { ThemeName } from '../../types';
 
 interface ThemeToggleProps {
@@ -9,7 +8,6 @@ interface ThemeToggleProps {
 export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
   const nextTheme: ThemeName = theme === 'dark' ? 'light' : 'dark';
   const nextThemeLabel = nextTheme === 'light' ? '라이트' : '다크';
-  const Icon = nextTheme === 'light' ? Sun : Moon;
 
   return (
     <button
@@ -19,7 +17,7 @@ export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
       title={`${nextThemeLabel} 테마로 변경`}
       type="button"
     >
-      <Icon aria-hidden="true" size={18} strokeWidth={2} />
+      <span aria-hidden="true" className="theme-toggle__icon">◐</span>
     </button>
   );
 }

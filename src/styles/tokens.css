@@ -8,6 +8,12 @@
   --space-6: 24px;
   --space-8: 32px;
   --control-height: 40px;
+  --auth-product-panel-width: 520px;
+  --auth-form-width-desktop: 440px;
+  --auth-form-width-tablet: 420px;
+  --auth-form-offset-mobile: 44px;
+  --auth-form-offset-tablet: 120px;
+  --auth-form-offset-desktop: 156px;
   --calendar-event-line-height: 18px;
   --mini-calendar-date-font-size: 8px;
   --mini-calendar-date-line-height: 1.25;
