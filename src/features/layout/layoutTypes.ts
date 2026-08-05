@@ -13,5 +13,6 @@ export interface DiaryLayoutProps {
   workspace: Workspace;
   onChangeSection: (section: AppSection) => void;
   onEdit: (target: WorkspaceEditorTarget) => void;
+  onSignOut: () => void | Promise<void>;
   onToggleTheme: () => void;
 }

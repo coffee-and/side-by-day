@@ -1,9 +1,10 @@
 interface AuthButtonProps {
   disabled?: boolean;
+  label?: string;
   loading?: boolean;
 }
 
-export function AuthButton({ disabled = false, loading = false }: AuthButtonProps) {
+export function AuthButton({ disabled = false, label = '로그인', loading = false }: AuthButtonProps) {
   return (
     <button
       aria-busy={loading}
@@ -11,7 +12,7 @@ export function AuthButton({ disabled = false, loading = false }: AuthButtonProp
       disabled={disabled || loading}
       type="submit"
     >
-      {loading ? '처리 중…' : '로그인'}
+      {loading ? '처리 중…' : label}
     </button>
   );
 }

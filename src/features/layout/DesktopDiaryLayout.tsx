@@ -1,3 +1,4 @@
+import { LogOut } from 'lucide-react';
 import { ContextualAdd } from '../../components/ui/ContextualAdd';
 import { DiarySelector } from '../../components/ui/DiarySelector';
 import { SectionNavigation } from '../../components/ui/SectionNavigation';
@@ -12,7 +13,18 @@ export function DesktopDiaryLayout(props: DiaryLayoutProps) {
       <aside className="desktop-sidebar">
         <header>
           <h1>SIDE BY DAY</h1>
-          <ThemeToggle onToggle={props.onToggleTheme} theme={props.theme} />
+          <div className="desktop-sidebar__actions">
+            <ThemeToggle onToggle={props.onToggleTheme} theme={props.theme} />
+            <button
+              aria-label="로그아웃"
+              className="icon-button"
+              onClick={() => void props.onSignOut()}
+              title="로그아웃"
+              type="button"
+            >
+              <LogOut aria-hidden="true" size={15} />
+            </button>
+          </div>
         </header>
         <DiarySelector workspace={props.workspace} />
         <SectionNavigation

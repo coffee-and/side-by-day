@@ -10,9 +10,14 @@ import { useWorkspace } from './features/workspace/hooks/useWorkspace';
 import { useTheme } from './hooks/useTheme';
 import type { AppSection, WorkspaceEditorTarget } from './types';
 
-export function App() {
+interface AppProps {
+  onSignOut: () => void | Promise<void>;
+  userId: string;
+}
+
+export function App({ onSignOut, userId }: AppProps) {
   const { theme, toggleTheme } = useTheme();
-  const workspace = useWorkspace();
+  const workspace = useWorkspace(userId);
   const calendar = useCalendar();
   const layout = useResponsiveLayout();
   const [activeSection, setActiveSection] = useState<AppSection>(
@@ -27,6 +32,7 @@ export function App() {
     workspace,
     onChangeSection: setActiveSection,
     onEdit: setEditorTarget,
+    onSignOut,
     onToggleTheme: toggleTheme,
   };
 

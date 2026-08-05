@@ -2,9 +2,11 @@ import type { ChangeEventHandler, HTMLInputAutoCompleteAttribute, HTMLInputTypeA
 
 interface AuthInputProps {
   autoComplete: HTMLInputAutoCompleteAttribute;
+  disabled?: boolean;
   error?: string;
   id: string;
   label: string;
+  minLength?: number;
   onChange: ChangeEventHandler<HTMLInputElement>;
   placeholder: string;
   type: HTMLInputTypeAttribute;
@@ -13,9 +15,11 @@ interface AuthInputProps {
 
 export function AuthInput({
   autoComplete,
+  disabled = false,
   error,
   id,
   label,
+  minLength,
   onChange,
   placeholder,
   type,
@@ -32,7 +36,9 @@ export function AuthInput({
         autoCapitalize="none"
         autoComplete={autoComplete}
         className="auth-field__control"
+        disabled={disabled}
         id={id}
+        minLength={minLength}
         onChange={onChange}
         placeholder={placeholder}
         spellCheck={false}

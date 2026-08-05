@@ -15,7 +15,7 @@ import type {
   TodoItem,
 } from '../../../types';
 
-const STORAGE_KEY = 'side-by-day-workspace-v1';
+const STORAGE_KEY_PREFIX = 'side-by-day-workspace-v1';
 
 interface StoredWorkspace {
   events: CalendarEvent[];
@@ -31,9 +31,13 @@ const initialWorkspace: StoredWorkspace = {
   counters: sampleCounters,
 };
 
-function readWorkspace(): StoredWorkspace {
+function getStorageKey(userId: string) {
+  return `${STORAGE_KEY_PREFIX}:${userId}`;
+}
+
+function readWorkspace(userId: string): StoredWorkspace {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(getStorageKey(userId));
     return stored ? { ...initialWorkspace, ...JSON.parse(stored) } : initialWorkspace;
   } catch {
     return initialWorkspace;
@@ -47,8 +51,8 @@ function createId(prefix: string) {
   return `${prefix}-${value}`;
 }
 
-function persist(next: StoredWorkspace) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+function persist(userId: string, next: StoredWorkspace) {
+  localStorage.setItem(getStorageKey(userId), JSON.stringify(next));
   return next;
 }
 
@@ -57,9 +61,9 @@ export type TodoInput = Omit<TodoItem, 'id' | 'createdAt' | 'completedAt'>;
 export type MemoInput = Omit<Memo, 'id' | 'updatedAt'>;
 export type CounterInput = Omit<DateCounter, 'id'>;
 
-export function useWorkspace() {
+export function useWorkspace(userId: string) {
   const [activeSpaceId, setActiveSpaceId] = useState(PERSONAL_SPACE_ID);
-  const [data, setData] = useState<StoredWorkspace>(readWorkspace);
+  const [data, setData] = useState<StoredWorkspace>(() => readWorkspace(userId));
 
   const activeSpace = sampleSpaces.find((space) => space.id === activeSpaceId)
     ?? sampleSpaces[0];
@@ -83,7 +87,7 @@ export function useWorkspace() {
   );
 
   function updateData(updater: (current: StoredWorkspace) => StoredWorkspace) {
-    setData((current) => persist(updater(current)));
+    setData((current) => persist(userId, updater(current)));
   }
 
   function createEvent(input: EventInput) {

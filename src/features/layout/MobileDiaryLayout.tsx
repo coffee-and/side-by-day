@@ -9,6 +9,7 @@ export function MobileDiaryLayout(props: DiaryLayoutProps) {
   return (
     <div className="mobile-layout">
       <AppHeader
+        onSignOut={props.onSignOut}
         onToggleTheme={props.onToggleTheme}
         theme={props.theme}
         workspace={props.workspace}

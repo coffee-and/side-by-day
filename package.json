@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hyunbinseo/holidays-kr": "5.2027.1",
+    "@supabase/supabase-js": "2.112.1",
     "korean-lunar-calendar": "0.4.0",
     "lucide-react": "1.25.0",
     "react": "19.2.8",
