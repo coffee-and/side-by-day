@@ -4,6 +4,15 @@
   background: var(--surface-page);
 }
 
+.auth-loading {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  background: var(--surface-page);
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
 .auth-product-panel {
   display: none;
 }
@@ -155,6 +164,12 @@
 .auth-text-action--strong {
   color: var(--text-primary);
   font-weight: 700;
+}
+
+.auth-text-action:disabled {
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 @media (min-width: 768px) {

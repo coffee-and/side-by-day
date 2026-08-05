@@ -25,8 +25,11 @@
 - 날짜별 대표 아이콘 1개 표시
 - 월간 셀 높이를 넘는 일정은 저장 개수와 관계없이 `…`로 생략 표시
 - `TODAY / CALENDAR / TO DO / NOTES` 화면 전환
+- Supabase 이메일 회원가입·로그인·로그아웃
+- 로그인 세션 유지와 보호된 다이어리 진입
+- 비밀번호 재설정 메일과 새 비밀번호 등록
 
-현재 데이터는 로컬 실행 상태와 예시 데이터로 동작합니다. 로그인, DB 저장, 여러 기기 동기화, 친구 초대와 공유 권한은 아직 포함하지 않습니다.
+로그인은 Supabase Auth와 연결됩니다. 일정·할 일·메모·D-Day 데이터는 로그인 사용자별로 분리된 브라우저 로컬 저장소와 예시 데이터로 동작하며, 여러 기기 동기화·친구 초대·공유 권한은 아직 포함하지 않습니다.
 
 ## 제품 구조
 
@@ -78,6 +81,24 @@ src/
 구현 세부 규칙과 반응형 와이어프레임은 [docs/DIARY_WORKSPACE_SPEC.md](./docs/DIARY_WORKSPACE_SPEC.md)를 확인하세요.
 
 ## 실행
+
+Supabase 프로젝트의 API URL과 publishable key를 `.env.local`에 설정합니다. `service_role` 또는 secret key는 브라우저 앱에 넣지 않습니다.
+
+```bash
+cp .env.example .env.local
+```
+
+```dotenv
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key
+```
+
+Supabase Auth URL Configuration에는 다음 주소를 등록합니다.
+
+- Site URL: `https://coffee-and.github.io/side-by-day/`
+- Redirect URLs: `http://localhost:5173/side-by-day/`, `https://coffee-and.github.io/side-by-day/`
+
+GitHub Pages 배포에는 저장소 Actions Variables의 `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`를 사용합니다.
 
 ```bash
 npm ci

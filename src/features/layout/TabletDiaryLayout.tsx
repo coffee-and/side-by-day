@@ -14,6 +14,7 @@ export function TabletDiaryLayout(props: DiaryLayoutProps) {
   return (
     <div className="tablet-layout">
       <AppHeader
+        onSignOut={props.onSignOut}
         onToggleTheme={props.onToggleTheme}
         theme={props.theme}
         workspace={props.workspace}
